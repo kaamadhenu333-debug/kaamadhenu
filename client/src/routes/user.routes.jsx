@@ -1,20 +1,3 @@
-// import UserLayout from "../layouts/user/UserLayout";
-// import Home from "../pages/user/home/Home";
-// import Products from "../pages/user/products/Products";
-// import ProductDetail from "../pages/user/products/ProductDetail";
-
-// export const userRoutes = {
-//   path: "/",
-//   element: <UserLayout />,
-//   children: [
-//     { index: true, element: <Home /> },
-//     { path: "products", element: <Products /> },
-//     { path: "product/:id", element: <ProductDetail /> },
-//   ],
-// };
-// src/routes/user.routes.js
-
-////// for protected Routes //////
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 import UserLayout from "../layouts/user/UserLayout";
 import Home from "../pages/user/home/Home";

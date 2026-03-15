@@ -1,4 +1,3 @@
-// src/pages/admin/products/AddProductForm.jsx
 import { useState, useEffect } from "react";
 import {
   Plus,

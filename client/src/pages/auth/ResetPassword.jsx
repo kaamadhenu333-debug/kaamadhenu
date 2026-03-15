@@ -1,7 +1,5 @@
-// src/pages/auth/ResetPassword.jsx
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-// import { resetPassword } from "../../services/authService";
 import { Lock, KeyRound, CheckCircle, ArrowLeft } from "lucide-react";
 
 export default function ResetPassword() {

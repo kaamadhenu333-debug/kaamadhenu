@@ -26,33 +26,31 @@ const CategoryDetails = lazy(
 const ViewAllCustomers = lazy(
   () => import("../pages/admin/customers/ViewAllCustomers"),
 );
-const AddNewCustomer = lazy(
-  () => import("../pages/admin/customers/AddNewCustomer"),
-);
+// const AddNewCustomer = lazy(
+//   () => import("../pages/admin/customers/AddNewCustomer"),
+// );
 const CustomerDetails = lazy(
   () => import("../pages/admin/customers/CustomerDetails"),
 );
 
 const ViewAllOrders = lazy(() => import("../pages/admin/orders/ViewAllOrders"));
 const OrderDetails = lazy(() => import("../pages/admin/orders/OrderDetails"));
-const ViewAllPromotions = lazy(
-  () => import("../pages/admin/promotions/ViewAllPromotions"),
-);
-const CreateNewPromotion = lazy(
-  () => import("../pages/admin/promotions/CreateNewPromotion"),
-);
-const PromotionDetails = lazy(
-  () => import("../pages/admin/promotions/PromotionDetails"),
-);
-const ViewAllCoupons = lazy(
-  () => import("../pages/admin/coupons/ViewAllCoupons"),
-);
-const AddNewCoupon = lazy(() => import("../pages/admin/coupons/AddNewCoupon"));
-const ViewCouponDetail = lazy(
-  () => import("../pages/admin/coupons/CouponDetails"),
-);
-// const SystemHealth = lazy(() => import("../pages/admin/SystemHealth"));
-
+// const ViewAllPromotions = lazy(
+//   () => import("../pages/admin/promotions/ViewAllPromotions"),
+// );
+// const CreateNewPromotion = lazy(
+//   () => import("../pages/admin/promotions/CreateNewPromotion"),
+// );
+// const PromotionDetails = lazy(
+//   () => import("../pages/admin/promotions/PromotionDetails"),
+// );
+// const ViewAllCoupons = lazy(
+//   () => import("../pages/admin/coupons/ViewAllCoupons"),
+// );
+// const AddNewCoupon = lazy(() => import("../pages/admin/coupons/AddNewCoupon"));
+// const ViewCouponDetail = lazy(
+//   () => import("../pages/admin/coupons/CouponDetails"),
+// );
 export const adminRoutes = {
   path: "/admin",
   element: <Layout />,
@@ -191,77 +189,5 @@ export const adminRoutes = {
         },
       ],
     },
-    // {
-    //   path: "promotions",
-    //   children: [
-    //     {
-    //       patch: "",
-    //       index: true,
-    //       element: (
-    //         <Suspense fallback={<Loader />}>
-    //           <ViewAllPromotions />
-    //         </Suspense>
-    //       ),
-    //     },
-    //     {
-    //       path: "new",
-    //       element: (
-    //         <Suspense fallback={<Loader />}>
-    //           <CreateNewPromotion />
-    //         </Suspense>
-    //       ),
-    //     },
-    //     // ⭐ NEW ROUTE → For Viewing a Single Category
-    //     {
-    //       path: ":id",
-    //       element: (
-    //         <Suspense fallback={<Loader />}>
-    //           <PromotionDetails />
-    //         </Suspense>
-    //       ),
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: "coupons",
-
-    //   children: [
-    //     {
-    //       patch: "",
-    //       index: true,
-    //       element: (
-    //         <Suspense fallback={<Loader />}>
-    //           {/* <Coupons /> */}
-    //           <ViewAllCoupons />
-    //         </Suspense>
-    //       ),
-    //     },
-    //     {
-    //       path: "new",
-    //       element: (
-    //         <Suspense fallback={<Loader />}>
-    //           <AddNewCoupon />
-    //         </Suspense>
-    //       ),
-    //     },
-    //     // ⭐ NEW ROUTE → For Viewing a Single Category
-    //     {
-    //       path: ":id",
-    //       element: (
-    //         <Suspense fallback={<Loader />}>
-    //           <ViewCouponDetail />
-    //         </Suspense>
-    //       ),
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: "health",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       {/* <SystemHealth /> */}\<div>System Health</div>
-    //     </Suspense>
-    //   ),
-    // },
   ],
 };

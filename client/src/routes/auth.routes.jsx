@@ -25,9 +25,3 @@ export const authRoutes = {
     { path: "un-authorized", element: <UnAuthorized /> },
   ],
 };
-// export const authRoutes = [
-//   { path: "/auth/login", element: <Login /> },
-//   { path: "/auth/register", element: <Register /> },
-//   { path: "/auth/forgot-password", element: <ForgotPassword /> },
-//   { path: "/auth/reset-password", element: <ResetPassword /> },
-// ];

@@ -5,7 +5,6 @@ import { useAuthStore } from "../../store/auth/useAuthStore";
 
 export default function Header({ setIsOpen }) {
   const navigate = useNavigate();
-  const admin = null;
   const handleDelete = () => {};
   const handleLogout = async () => {
     await logout();

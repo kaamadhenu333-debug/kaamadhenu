@@ -1,4 +1,3 @@
-// src/pages/admin/customers/ViewAllCustomers.jsx
 import { useState, useMemo, useEffect } from "react";
 import {
   Plus,
