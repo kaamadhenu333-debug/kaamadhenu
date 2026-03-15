@@ -4,7 +4,7 @@ import Loader from "../components/admin/Loader";
 
 // Lazy imports
 const Overview = lazy(() => import("../pages/admin/dashboard/Overview"));
-const AdminProfile = lazy(() => import("../pages/admin/profile/AdminProfile"));
+// const AdminProfile = lazy(() => import("../pages/admin/profile/AdminProfile"));
 const AddNewProduct = lazy(
   () => import("../pages/admin/products/AddNewProduct"),
 );
@@ -64,14 +64,14 @@ export const adminRoutes = {
         </Suspense>
       ),
     },
-    {
-      path: "profile",
-      element: (
-        <Suspense fallback={<Loader />}>
-          <AdminProfile />
-        </Suspense>
-      ),
-    },
+    // {
+    //   path: "profile",
+    //   element: (
+    //     <Suspense fallback={<Loader />}>
+    //       <AdminProfile />
+    //     </Suspense>
+    //   ),
+    // },
     {
       path: "products",
       children: [
