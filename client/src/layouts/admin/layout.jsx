@@ -2,11 +2,10 @@ import { useState } from "react";
 import Sidebar from "./SideBar";
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
-// import useThemeLoader from "../../hooks/common/useThemeLoader";
 
 function Layout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  // useThemeLoader();
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />

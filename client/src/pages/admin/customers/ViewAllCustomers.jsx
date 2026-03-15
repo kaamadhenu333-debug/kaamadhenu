@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Pagination from "../../../components/admin/Pagination";
-// import StatusModal from "../../../components/admin/StatusModal";
 import { useUserStore } from "../../../store/admin/useUserStore";
 import AdminHeaderWrapper from "../../../components/admin/AdminHeaderWrapper";
 
@@ -88,14 +87,6 @@ export default function ViewAllCustomers() {
   return (
     <div className="pb-10">
       <AdminHeaderWrapper {...wrapperData} />
-
-      {/* {(successMessage || error) && (
-        <StatusModal
-          message={successMessage || error}
-          type={successMessage ? "success" : "error"}
-          onClose={clearStatus}
-        />
-      )} */}
 
       <div className="space-y-6">
         {/* --- SMART FILTERS --- */}

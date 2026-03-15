@@ -73,14 +73,6 @@ export default function CustomerDetails() {
       {/* HEADER */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 px-2">
         <div className="space-y-2">
-          {/* <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-blue-600"
-          >
-            <ArrowLeft size={14} />
-            BACK TO CUSTOMERS
-          </button> */}
-
           <AdminHeaderWrapper
             title={`${user.firstName || ""} ${user.lastName || ""}`}
             description={`Customer details`}
