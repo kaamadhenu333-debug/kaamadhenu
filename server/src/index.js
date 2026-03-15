@@ -34,6 +34,7 @@ const allowedOrigins = [
   "http://localhost:9898",
   "https://www.khamadhenu.com",
   "http://www.khamadhenu.com",
+  "https://kaamadhenu-frontends.onrender.com",
 ];
 
 app.use(
