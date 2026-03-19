@@ -233,7 +233,7 @@ export default function Login() {
             </button>
 
             {/* Demo Account Info */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-emerald-800 font-medium mb-1">
                 Demo Accounts:
               </p>
@@ -242,7 +242,7 @@ export default function Login() {
                 <p>superadmin@gmail.com / super@123</p>
                 <p>tharun@gmail.com / Tharun@123</p>
               </div>
-            </div>
+            </div> */}
 
             {/* Register Link */}
             <div className="pt-4 border-t border-gray-200">
