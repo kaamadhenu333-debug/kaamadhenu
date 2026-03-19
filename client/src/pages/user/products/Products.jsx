@@ -199,7 +199,7 @@ export default function Products() {
                           <Link to={`/product/${product._id}`}>
                             {product.images?.[0] ? (
                               <img
-                                src={`http://localhost:5000${product.images.find((i) => i.isPrimary)?.imagePath}`}
+                                src={`${import.meta.env.VITE_BASE_IMG_URL}${product.images.find((i) => i.isPrimary)?.imagePath}`}
                                 alt={product.name}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               />

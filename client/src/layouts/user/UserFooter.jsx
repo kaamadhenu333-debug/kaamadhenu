@@ -77,7 +77,7 @@ const UserFooter = () => {
                 <h6 className="font-medium">Address :</h6>
                 <span>2-250-20-B-C-7-2</span>
                 <p>Ramireddy lay out , 7th cross , </p>
-                <p>near Ganesh temple , madanapalle</p>
+                <p>near Ganesh temple , Madanapalle, AP - 517325.</p>
               </div>
               <nav className="flex flex-col gap-2.5 sm:gap-3 mt-4">
                 <h6 className="font-medium">Links :</h6>
@@ -205,7 +205,7 @@ const UserFooter = () => {
       <div className="border-t border-gray-400/50 py-4 sm:py-5 md:py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 text-xs sm:text-sm text-gray-700">
-            <p className="m-0 text-center md:text-left">© 2025 Proud Farmers</p>
+            <p className="m-0 text-center md:text-left">© 2026 Kaamadhenu </p>
             <nav className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6">
               <a
                 href="#"
@@ -231,12 +231,12 @@ const UserFooter = () => {
               >
                 Privacy Policy
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="text-gray-700 hover:text-gray-900 transition-colors duration-300 border-b border-gray-700 hover:border-gray-900 no-underline whitespace-nowrap"
               >
                 Powered by Shopify
-              </a>
+              </a> */}
             </nav>
           </div>
         </div>

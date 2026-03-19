@@ -21,11 +21,11 @@ const testimonials = [
     author: "Pawan Rathore",
     role: "Chef",
   },
-  {
-    text: "Their Himalayan salt enhances dishes significantly, and I have noticed positive health changes with its consumption.",
-    author: "Khushi Pandey",
-    role: "Food Blogger",
-  },
+  // {
+  //   text: "Their Himalayan salt enhances dishes significantly, and I have noticed positive health changes with its consumption.",
+  //   author: "Khushi Pandey",
+  //   role: "Food Blogger",
+  // },
 ];
 const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);

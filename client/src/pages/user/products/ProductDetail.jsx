@@ -130,7 +130,7 @@ export default function ProductDetail() {
                 {allImages[activeImage]?.imagePath &&
                 !allImages[activeImage].imagePath.includes("blob:") ? (
                   <img
-                    src={`http://localhost:5000${allImages[activeImage].imagePath}`}
+                    src={`${import.meta.env.VITE_BASE_IMG_URL}${allImages[activeImage].imagePath}`}
                     alt={allImages[activeImage].altText || selectedProduct.name}
                     className="max-h-80 max-w-full object-contain"
                   />
@@ -169,7 +169,7 @@ export default function ProductDetail() {
                     >
                       {image.imagePath && !image.imagePath.includes("blob:") ? (
                         <img
-                          src={`http://localhost:5000${image.imagePath}`}
+                          src={`${import.meta.env.VITE_BASE_IMG_URL}${image.imagePath}`}
                           alt={image.altText || `Product image ${index + 1}`}
                           className="w-full h-full object-cover"
                         />

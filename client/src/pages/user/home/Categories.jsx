@@ -42,7 +42,7 @@ const categories = [
     desc: "Natural Wellness",
   },
   {
-    name: "Fresh Mangoes",
+    name: "Fresh Mangos",
     img: "https://images.unsplash.com/photo-1553279768-865429fa0078?w=500",
     desc: "Seasonal Delights",
   },

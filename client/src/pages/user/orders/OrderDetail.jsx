@@ -155,6 +155,16 @@ export default function OrderDetails() {
           </div>
         </div>
       </div>
+      <div className="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl p-4 flex items-start gap-3">
+        <Truck className="mt-1 text-emerald-600" size={20} />
+
+        <div className="text-sm md:text-base">
+          <p className="font-semibold">Next Day Morning Delivery 🚚</p>
+          <p className="text-emerald-700">
+            All orders will be delivered by <strong>next day morning</strong>.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

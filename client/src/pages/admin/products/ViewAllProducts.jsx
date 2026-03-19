@@ -255,7 +255,7 @@ export default function ViewAllProducts() {
                           <img
                             src={
                               p?.images?.[0]?.imagePath
-                                ? `http://localhost:5000${p.images[0].imagePath}`
+                                ? `${import.meta.env.VITE_BASE_IMG_URL}${p.images[0].imagePath}`
                                 : "https://via.placeholder.com/48"
                             }
                             alt={p.name}

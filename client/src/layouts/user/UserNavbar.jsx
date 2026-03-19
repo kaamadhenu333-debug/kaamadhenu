@@ -101,18 +101,26 @@ const UserNavbar = () => {
         </div>
       </div>
       <div className="w-full bg-emerald-600 text-white text-center py-2 px-4 fixed top-0 left-0 z-50 shadow-md">
-        <p className="text-sm md:text-base">
-          ⚠️ If you face any issue, please call or message:{" "}
-          <a
-            href="tel:+918919558561"
-            className="underline font-semibold hover:text-emerald-200"
-          >
-            +91 8919558561
-          </a>
+        <p className="text-sm md:text-base flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
+          <span>
+            📍 Service available only in <strong>Madanapalle</strong>
+          </span>
+
+          <span className="hidden md:inline">|</span>
+
+          <span>
+            ⚠️ Facing any issue? Call or message:
+            <a
+              href="tel:+918919558561"
+              className="underline font-semibold ml-1 hover:text-emerald-200"
+            >
+              +91 8919558561
+            </a>
+          </span>
         </p>
       </div>
       {/* Navbar */}
-      <div className="border-b bg-white">
+      <div className="border-b mt-3 md:mt-0 bg-white">
         {/* This is Info Line */}
 
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
