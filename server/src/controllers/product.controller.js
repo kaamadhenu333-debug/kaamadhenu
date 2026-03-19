@@ -1,29 +1,64 @@
 import { validationResult } from "express-validator";
 import Product from "../models/product.model.js";
 import sharp from "sharp";
-import path from "path";
-import fs from "fs";
+// import path from "path";
+// import fs from "fs";
+import streamifier from "streamifier";
+import cloudinary from "../config/clodinary.js";
 
 ////////////// Helper: Process and Save Image //////////////////////
+// const processImage = async (file, productName, index) => {
+//   const uploadDir = "uploads/products/";
+//   if (!fs.existsSync(uploadDir)) {
+//     fs.mkdirSync(uploadDir, { recursive: true });
+//   }
+
+//   const filename = `prod-${Date.now()}-${index}.webp`;
+//   const outputPath = path.join(uploadDir, filename);
+
+//   await sharp(file.buffer)
+//     .resize(800, 800, { fit: "inside", withoutEnlargement: true })
+//     .toFormat("webp")
+//     .webp({ quality: 80 })
+//     .toFile(outputPath);
+
+//   return {
+//     imagePath: `/uploads/products/${filename}`,
+//     altText: productName,
+//     isPrimary: index === 0, // First image is primary by default
+//   };
+// };
+
+const uploadToCloudinary = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "products",
+        format: "webp",
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      },
+    );
+
+    streamifier.createReadStream(buffer).pipe(stream);
+  });
+};
+
 const processImage = async (file, productName, index) => {
-  const uploadDir = "uploads/products/";
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-
-  const filename = `prod-${Date.now()}-${index}.webp`;
-  const outputPath = path.join(uploadDir, filename);
-
-  await sharp(file.buffer)
+  const processedBuffer = await sharp(file.buffer)
     .resize(800, 800, { fit: "inside", withoutEnlargement: true })
-    .toFormat("webp")
     .webp({ quality: 80 })
-    .toFile(outputPath);
+    .toBuffer();
+
+  const result = await uploadToCloudinary(processedBuffer);
 
   return {
-    imagePath: `/uploads/products/${filename}`,
+    imagePath: result.secure_url,
+    publicId: result.public_id, // 🔥 IMPORTANT
     altText: productName,
-    isPrimary: index === 0, // First image is primary by default
+    isPrimary: index === 0,
   };
 };
 
@@ -100,14 +135,19 @@ export const updateProduct = async (req, res) => {
     }
 
     // 🔥 DELETE removed images
-    const __dirname = path.resolve();
+    // const __dirname = path.resolve();
 
-    product.images.forEach((img) => {
+    // product.images.forEach((img) => {
+    //   if (!parsedExisting.includes(img.imagePath)) {
+    //     const fullPath = path.join(__dirname, img.imagePath);
+    //     if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+    //   }
+    // });
+    for (const img of product.images) {
       if (!parsedExisting.includes(img.imagePath)) {
-        const fullPath = path.join(__dirname, img.imagePath);
-        if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+        await cloudinary.uploader.destroy(img.publicId);
       }
-    });
+    }
 
     // 🔥 Keep only selected images
     product.images = product.images.filter((img) =>
@@ -166,11 +206,14 @@ export const deleteProduct = async (req, res) => {
     }
 
     // Cleanup physical images
-    const __dirname = path.resolve();
-    product.images.forEach((img) => {
-      const fullPath = path.join(__dirname, img.imagePath);
-      if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
-    });
+    // const __dirname = path.resolve();
+    // product.images.forEach((img) => {
+    //   const fullPath = path.join(__dirname, img.imagePath);
+    //   if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+    // });
+    for (const img of product.images) {
+      await cloudinary.uploader.destroy(img.publicId);
+    }
 
     await Product.findByIdAndDelete(req.params.id);
     res

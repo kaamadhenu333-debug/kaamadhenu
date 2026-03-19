@@ -453,7 +453,7 @@ export default function ProductDetails() {
                   }`}
                 >
                   <img
-                    src={`${import.meta.env.VITE_BASE_IMG_URL}${img.url}`}
+                    src={`${img.url}`}
                     className="w-full h-full object-cover"
                     alt="product"
                   />

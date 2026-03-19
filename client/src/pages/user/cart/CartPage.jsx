@@ -220,7 +220,7 @@ export default function CartPage() {
                     className="bg-white rounded-2xl p-4 flex gap-4 border border-gray-100 shadow-sm"
                   >
                     <img
-                      src={`${import.meta.env.VITE_BASE_IMG_URL}${primaryImage?.imagePath}`}
+                      src={`${primaryImage?.imagePath}`}
                       className="w-20 h-20 object-cover rounded-lg bg-gray-50"
                       alt="product"
                     />
