@@ -32,8 +32,10 @@ app.use(cookieParser());
 // );
 const allowedOrigins = [
   "http://localhost:9898",
-  "https://www.khamadhenu.com",
-  "http://www.khamadhenu.com",
+  "https://www.kaamadhenu.com",
+  "http://www.kaamadhenu.com",
+  "https://kaamadhenu.com",
+  "http://kaamadhenu.com",
   "https://kaamadhenu-frontends.onrender.com",
 ];
 
