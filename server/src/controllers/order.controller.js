@@ -5,6 +5,34 @@ import Cart from "../models/cart.model.js";
 import Product from "../models/product.model.js";
 import Address from "../models/address.model.js";
 
+const convertToBaseUnit = (value, unit) => {
+  const u = unit.toLowerCase();
+
+  switch (u) {
+    // Weight
+    case "kg":
+      return value * 1000; // kg → g
+    case "g":
+      return value;
+
+    // Liquid
+    case "l":
+    case "liter":
+      return value * 1000; // L → ml
+    case "ml":
+      return value;
+
+    // Count
+    case "piece":
+    case "pieces":
+    case "unit":
+      return value;
+
+    default:
+      throw new Error(`Unsupported unit: ${unit}`);
+  }
+};
+
 ///////////////// Create New Order (Checkout) ////////////////////
 export const createOrder = async (req, res) => {
   try {
@@ -72,7 +100,7 @@ export const createOrder = async (req, res) => {
       // }
 
       // 4. Deduct the stock
-      // variant.stockQuantity -= item.quantity;
+      product.stock.quantity -= item.quantity * variant.stockQuantity;
 
       // 5. Push to the orderItems array for the Order model
       orderItems.push({
@@ -172,7 +200,10 @@ export const updateOrderStatus = async (req, res) => {
     // 1. Destructure with a fallback for paymentStatus if you want a hardcoded default
     // Or just handle it inside the logic
     const { orderStatus, paymentStatus } = req.body;
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      "userId",
+      "firstName lastName email phone",
+    );
 
     if (!order) {
       return res
@@ -188,18 +219,20 @@ export const updateOrderStatus = async (req, res) => {
       if (orderStatus === "delivered") {
         order.deliveredAt = Date.now();
         order.paymentStatus = "paid";
+      } else {
+        order.paymentStatus = "pending";
       }
     }
 
     // 3. Update Payment Status with a Default logic
-    if (paymentStatus) {
-      order.paymentStatus = paymentStatus;
-    } else {
-      // If paymentStatus is missing in the request, we ensure it's not undefined.
-      // If the order is brand new or just confirmed, it stays at its current value
-      // or "pending" if it was somehow empty.
-      order.paymentStatus = order.paymentStatus || "pending";
-    }
+    // if (paymentStatus) {
+    //   order.paymentStatus = paymentStatus;
+    // } else {
+    //   // If paymentStatus is missing in the request, we ensure it's not undefined.
+    //   // If the order is brand new or just confirmed, it stays at its current value
+    //   // or "pending" if it was somehow empty.
+    //   order.paymentStatus = order.paymentStatus || "pending";
+    // }
 
     await order.save();
 

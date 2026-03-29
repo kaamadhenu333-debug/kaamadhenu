@@ -63,9 +63,9 @@ export default function Login() {
     }
   };
 
-  // const handleForgotPassword = () => {
-  //   navigate("/auth/forgot-password");
-  // };
+  const handleForgotPassword = () => {
+    navigate("/auth/forgot-password");
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 flex items-center justify-center p-4">
@@ -117,14 +117,14 @@ export default function Login() {
                 <label className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
-                {/* <button
+                <button
                   type="button"
                   onClick={handleForgotPassword}
                   className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors flex items-center group"
                 >
                   <KeyRound className="h-4 w-4 mr-1 group-hover:scale-110 transition-transform" />
                   Forgot password?
-                </button> */}
+                </button>
               </div>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -231,18 +231,6 @@ export default function Login() {
                 </div>
               )}
             </button>
-
-            {/* Demo Account Info */}
-            {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-sm text-emerald-800 font-medium mb-1">
-                Demo Accounts:
-              </p>
-              <div className="text-xs text-emerald-700 space-y-1">
-                <p>sree@gmail.com / 123456</p>
-                <p>superadmin@gmail.com / super@123</p>
-                <p>tharun@gmail.com / Tharun@123</p>
-              </div>
-            </div> */}
 
             {/* Register Link */}
             <div className="pt-4 border-t border-gray-200">

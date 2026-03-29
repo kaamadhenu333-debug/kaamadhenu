@@ -123,10 +123,13 @@ export const useOrderStore = create((set, get) => ({
     set({ loading: true, error: null });
     try {
       // statusData should be { orderStatus: "confirmed", paymentStatus: "paid" }
+      console.log("status data :", statusData);
       const status = {
-        orderStatus: statusData.orderStatus,
+        orderStatus: statusData,
         paymentStatus: null,
       };
+      console.log("status :", status);
+
       const res = await axios.put(`/orders/${orderId}/status`, status);
 
       if (res.data.success) {

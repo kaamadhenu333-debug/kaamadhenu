@@ -30,18 +30,6 @@ export default function ViewAllProducts() {
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // const {
-  //   fetchProducts,
-  //   fetchCategories,
-  //   productsData,
-  //   categoriesData,
-  //   deleteProduct,
-  //   successMessage,
-  //   loading,
-  //   error,
-  //   clearStatus,
-  // } = useAdminProductStore();
-
   const {
     fetchProducts,
     fetchCategories,

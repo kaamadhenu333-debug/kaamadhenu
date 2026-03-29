@@ -4,6 +4,9 @@ import {
   loginUser,
   refreshToken,
   logout,
+  forgotPassword,
+  verifyOTP,
+  resetPassword,
 } from "../controllers/auth.controller.js";
 import { protect } from "../middleware/auth.js";
 import { getMe } from "../controllers/auth.controller.js";
@@ -23,5 +26,23 @@ router.post(
 
 router.post("/refresh-token", refreshToken);
 router.post("/logout", logout);
+
+router.post("/forgot-password", [body("email").isEmail()], forgotPassword);
+
+router.post(
+  "/verify-otp",
+  [body("email").isEmail(), body("otp").notEmpty()],
+  verifyOTP,
+);
+
+router.post(
+  "/reset-password",
+  [
+    body("email").isEmail(),
+    body("password").isLength({ min: 6 }),
+    body("confirmPassword").notEmpty(),
+  ],
+  resetPassword,
+);
 
 export default router;

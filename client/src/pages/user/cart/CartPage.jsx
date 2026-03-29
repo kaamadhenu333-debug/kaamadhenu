@@ -37,6 +37,7 @@ export default function CartPage() {
     updateCartItem,
     fetchCart,
   } = useCartStore();
+
   const { addresses, fetchAddresses } = useAddressStore();
 
   // --- NEW STATES FOR CHECKOUT ---
@@ -74,6 +75,18 @@ export default function CartPage() {
   const handleAddAddress = () => {
     navigate("/profile");
   };
+  const hasOutOfStock = cartData?.items?.some(
+    (item) => item.isOutOfStock === true,
+  );
+
+  const hasInvalidVariant = cartItems.some((item) => {
+    const variant = item.productId?.variants?.find(
+      (v) => v._id === item.variantId,
+    );
+    return !variant; // ❌ variant deleted
+  });
+  const hasNoAddress = !selectedAddress;
+  const isCheckoutDisabled = hasNoAddress || hasOutOfStock || hasInvalidVariant;
 
   /// Handle checkout ///
   const handleCheckout = async () => {
@@ -90,6 +103,7 @@ export default function CartPage() {
     const newOrder = await createOrder(orderData);
 
     if (newOrder) {
+      await fetchCart(); // refresh cart
       // Navigate to the summary/confirmation page with the new order ID
       navigate(`/checkout/confirm/${newOrder._id}`);
     }
@@ -153,10 +167,15 @@ export default function CartPage() {
           {/* Left Column: Items & Address */}
           <div className="lg:col-span-2 space-y-6">
             {/* 1. Address Selection Section */}
-            <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <span className="text-xs text-gray-500">
-                must select adrress to enable the confirm order
-              </span>
+            <section
+              className={`rounded-2xl bg-white shadow-sm p-6 ${addresses.length === 0 ? `border-red-400 border-2` : " border-gray-100"}`}
+            >
+              {addresses.length < 1 && (
+                <span className="text-xs text-red-400">
+                  Must select adrress to enable the confirm order
+                </span>
+              )}
+
               <div className="flex justify-between items-center mb-4 mt-2">
                 <h3 className="text-lg font-bold flex items-center gap-2">
                   <MapPin className="text-green-600 w-5 h-5" /> Delivery Address
@@ -215,59 +234,75 @@ export default function CartPage() {
                 );
 
                 return (
-                  <div
-                    key={index}
-                    className="bg-white rounded-2xl p-4 flex gap-4 border border-gray-100 shadow-sm"
-                  >
-                    <img
-                      src={`${primaryImage?.imagePath}`}
-                      className="w-20 h-20 object-cover rounded-lg bg-gray-50"
-                      alt="product"
-                    />
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <h4 className="font-bold text-gray-900">
-                          {item.productId?.name}
-                        </h4>
-                        <button
-                          onClick={() => handleRemoveItem(item)}
-                          className="text-gray-400 hover:text-red-500"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                      <p className="text-xs text-gray-500 mb-2">
-                        Variant: {vatinatDetails?.variantName} (
-                        {vatinatDetails?.quantityUnit})
-                      </p>
-                      <div className="flex justify-between items-end">
-                        <div className="flex items-center gap-2 border rounded-lg p-1">
+                  <React.Fragment key={index}>
+                    {item.isOutOfStock && (
+                      <span className="text-red-400 text-xs ">
+                        This item out of stock (Max -{" "}
+                        {item?.availableQuantity || "null"})
+                      </span>
+                    )}
+                    {!vatinatDetails && (
+                      <span className="text-red-400 text-xs ">
+                        This variant is not available
+                      </span>
+                    )}
+                    <div
+                      className={`bg-white rounded-2xl p-4 flex gap-4 border  shadow-sm ${item.isOutOfStock || !vatinatDetails ? "border-2 border-red-400" : "border-gray-100"}`}
+                    >
+                      <img
+                        src={`${primaryImage?.imagePath}`}
+                        className="w-20 h-20 object-cover rounded-lg bg-gray-50"
+                        alt="product"
+                      />
+                      <div className="flex-1">
+                        <div className="flex justify-between">
+                          <h4 className="font-bold text-gray-900">
+                            {item.productId?.name}
+                          </h4>
+
                           <button
-                            onClick={() =>
-                              handleUpdateQuantity(item, item.quantity - 1)
-                            }
-                            className="p-1"
+                            onClick={() => handleRemoveItem(item)}
+                            className="text-gray-400 hover:text-red-500"
                           >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="text-sm font-bold w-6 text-center">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() =>
-                              handleUpdateQuantity(item, item.quantity + 1)
-                            }
-                            className="p-1"
-                          >
-                            <Plus className="w-3 h-3" />
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
-                        <span className="font-bold text-green-600">
-                          ₹{item.discountedTotal.toFixed(2)}
-                        </span>
+                        <p className="text-xs text-gray-500 mb-2">
+                          Variant: {vatinatDetails?.variantName} (
+                          {vatinatDetails?.quantityUnit})
+                        </p>
+                        <p className="text-sm text-gray-600 mb-2">
+                          Max - {item?.availableQuantity}{" "}
+                        </p>
+                        <div className="flex justify-between items-end">
+                          <div className="flex items-center gap-2 border rounded-lg p-1">
+                            <button
+                              onClick={() =>
+                                handleUpdateQuantity(item, item.quantity - 1)
+                              }
+                              className="p-1"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <span className="text-sm font-bold w-6 text-center">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                handleUpdateQuantity(item, item.quantity + 1)
+                              }
+                              className="p-1"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+                          <span className="font-bold text-green-600">
+                            ₹{item.discountedTotal.toFixed(2)}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </React.Fragment>
                 );
               })}
             </section>
@@ -362,11 +397,12 @@ export default function CartPage() {
 
               <button
                 onClick={handleCheckout}
-                disabled={!selectedAddress}
+                // disabled={!selectedAddress || hasOutOfStock}
+                disabled={isCheckoutDisabled}
                 className={`w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-md ${
-                  selectedAddress
-                    ? "bg-green-600 text-white hover:bg-green-700 hover:shadow-xl active:scale-95"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  isCheckoutDisabled
+                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : "bg-green-600 text-white hover:bg-green-700 hover:shadow-xl active:scale-95"
                 }`}
               >
                 {paymentMethod === "online" ? <CreditCard /> : <Banknote />}

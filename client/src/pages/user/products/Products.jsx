@@ -287,7 +287,7 @@ export default function Products() {
               className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm"
               onClick={() => setShowMobileFilters(false)}
             />
-            <div className="absolute bottom-0 inset-x-0 bg-white rounded-t-[2rem] p-6 max-h-[80vh] overflow-y-auto">
+            <div className="absolute bottom-0 inset-x-0 bg-white rounded-t-4xl p-6 max-h-[80vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-lg font-semibold text-emerald-950">
                   Filters

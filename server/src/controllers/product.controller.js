@@ -1,8 +1,8 @@
 import { validationResult } from "express-validator";
 import Product from "../models/product.model.js";
 import sharp from "sharp";
-// import path from "path";
-// import fs from "fs";
+import path from "path";
+import fs from "fs";
 import streamifier from "streamifier";
 import cloudinary from "../config/clodinary.js";
 
@@ -24,6 +24,7 @@ import cloudinary from "../config/clodinary.js";
 
 //   return {
 //     imagePath: `/uploads/products/${filename}`,
+//     publicId: filename, // 🔥 IMPORTANT
 //     altText: productName,
 //     isPrimary: index === 0, // First image is primary by default
 //   };
@@ -135,14 +136,15 @@ export const updateProduct = async (req, res) => {
     }
 
     // 🔥 DELETE removed images
-    // const __dirname = path.resolve();
-
+    const __dirname = path.resolve();
+    ///////////////// This is for local file system /////////////
     // product.images.forEach((img) => {
     //   if (!parsedExisting.includes(img.imagePath)) {
     //     const fullPath = path.join(__dirname, img.imagePath);
     //     if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
     //   }
     // });
+    ////////////// This is for cloudinary file system //////////
     for (const img of product.images) {
       if (!parsedExisting.includes(img.imagePath)) {
         await cloudinary.uploader.destroy(img.publicId);
@@ -182,10 +184,14 @@ export const updateProduct = async (req, res) => {
     }
 
     const updatedProduct = await product.save();
+    // 🔥 IMPORTANT FIX: populate before sending
+    const populatedProduct = await Product.findById(
+      updatedProduct._id,
+    ).populate("categoryId", "name");
 
     res.status(200).json({
       success: true,
-      product: updatedProduct,
+      product: populatedProduct,
     });
   } catch (error) {
     res.status(500).json({
@@ -205,12 +211,14 @@ export const deleteProduct = async (req, res) => {
         .json({ message: "Product not found", success: false });
     }
 
-    // Cleanup physical images
+    // Cleanup physical images for local
     // const __dirname = path.resolve();
     // product.images.forEach((img) => {
     //   const fullPath = path.join(__dirname, img.imagePath);
     //   if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
     // });
+
+    //////  This is for cloudinary image cleanup //////
     for (const img of product.images) {
       await cloudinary.uploader.destroy(img.publicId);
     }
@@ -230,7 +238,8 @@ export const getProducts = async (req, res) => {
   try {
     const { categoryId } = req.query;
 
-    const filter = { isActive: true };
+    // const filter = { isActive: true };
+    const filter = {};
 
     if (categoryId) {
       filter.categoryId = categoryId;

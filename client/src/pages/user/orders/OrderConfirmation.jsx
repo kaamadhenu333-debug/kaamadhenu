@@ -37,14 +37,13 @@ export default function OrderConfirmation() {
 
   useEffect(() => {
     if (selectedOrder?.orderStatus === "confirmed") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsConfirmed(true);
     }
   }, [selectedOrder]);
   const handleFinalConfirm = async () => {
     // Move the order from 'pending' to 'confirmed'
-    const success = await updateOrderStatus(orderId, {
-      orderStatus: "confirmed",
-    });
+    const success = await updateOrderStatus(orderId, "confirmed");
     if (success) {
       setIsConfirmed(true);
     }

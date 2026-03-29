@@ -33,9 +33,9 @@ const ProfileEditForm = () => {
     phone: "",
     email: "",
     addressLine1: "",
-    city: "",
-    state: "",
-    pincode: "",
+    city: "Madanapalle",
+    state: "Andhra Pradesh",
+    pincode: 517325,
     isDefault: false,
   });
 
@@ -132,9 +132,9 @@ const ProfileEditForm = () => {
       phone: "",
       email: "",
       addressLine1: "",
-      city: "",
-      state: "",
-      pincode: "",
+      city: "Madanapalle",
+      state: "Andhra Pradesh",
+      pincode: 517325,
       isDefault: false,
     });
     setEditingAddressId(null);
@@ -320,13 +320,15 @@ const ProfileEditForm = () => {
                   label="City"
                   name="city"
                   value={addressForm.city}
-                  onChange={handleAddressChange}
+                  disabled
+                  // onChange={handleAddressChange}
                 />
                 <InputField
                   label="State"
                   name="state"
                   value={addressForm.state}
-                  onChange={handleAddressChange}
+                  disabled
+                  // onChange={handleAddressChange}
                 />
               </div>
 

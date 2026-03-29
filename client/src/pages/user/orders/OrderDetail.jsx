@@ -21,9 +21,7 @@ export default function OrderDetails() {
 
   const handleFinalConfirm = async () => {
     // Move the order from 'pending' to 'confirmed'
-    const success = await updateOrderStatus(selectedOrder?._id, {
-      orderStatus: "confirmed",
-    });
+    const success = await updateOrderStatus(selectedOrder?._id, "confirmed");
     if (success) {
       navigate(`/checkout/confirm/${selectedOrder?._id}`);
     }

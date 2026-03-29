@@ -2,6 +2,11 @@ import { validationResult } from "express-validator";
 import User from "../models/user.model.js";
 import RefreshToken from "../models/refreshToken.model.js";
 import {
+  sendOTPEmail,
+  hashOTP,
+  generateOTP,
+} from "../utils/utilityFunctions.js";
+import {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
@@ -229,6 +234,118 @@ export const logout = async (req, res) => {
     res.status(200).json({
       message: "Logged out successfully",
       success: true,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, success: false });
+  }
+};
+
+// Forget Password //
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const otp = generateOTP();
+    const hashedOTP = hashOTP(otp);
+
+    user.resetPasswordOTP = hashedOTP;
+    user.resetPasswordOTPExpire = Date.now() + 10 * 60 * 1000; // 10 min
+    user.resetPasswordVerified = false;
+
+    await user.save();
+
+    // 👉 Send email (replace with nodemailer)
+    sendOTPEmail(email, otp);
+
+    res.status(200).json({
+      success: true,
+      message: "OTP sent to email",
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, success: false });
+  }
+};
+
+/// OTP Verify ///
+
+export const verifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    const hashedOTP = hashOTP(otp);
+
+    const user = await User.findOne({
+      email,
+      resetPasswordOTP: hashedOTP,
+      resetPasswordOTPExpire: { $gt: Date.now() },
+    }).select("+resetPasswordOTP");
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired OTP",
+      });
+    }
+
+    user.resetPasswordVerified = true;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "OTP verified successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, success: false });
+  }
+};
+
+// Reset Password //
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Passwords do not match",
+      });
+    }
+
+    const user = await User.findOne({ email }).select("+passwordHash");
+
+    if (!user || !user.resetPasswordVerified) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP not verified",
+      });
+    }
+
+    // 🔐 Update password
+    user.passwordHash = password;
+
+    // 🧹 Clear reset fields
+    user.resetPasswordOTP = undefined;
+    user.resetPasswordOTPExpire = undefined;
+    user.resetPasswordVerified = false;
+
+    await user.save();
+
+    // 🔥 OPTIONAL: logout from all devices
+    await RefreshToken.deleteMany({ userId: user._id });
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
     });
   } catch (error) {
     res.status(500).json({ message: error.message, success: false });

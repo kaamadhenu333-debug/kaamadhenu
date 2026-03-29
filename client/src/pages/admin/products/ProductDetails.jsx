@@ -119,9 +119,6 @@ export default function ProductDetails() {
     });
   };
 
-  // const handleDelete = () => {
-  //   confirm("Delete product?") && navigate("/admin/products");
-  // };
   const handleDelete = async () => {
     if (!confirm("Delete product?")) return;
     await deleteProduct(id);
@@ -131,6 +128,9 @@ export default function ProductDetails() {
   const validate = () => {
     const e = {};
     if (!form.name.trim()) e.name = "Product name is required";
+    if (!form.stock_quantity === "" || form.stock_quantity < 0)
+      e.stock_quantity = "stock quantity must be > 0";
+    if (!form.stock_unit) e.stock_unit = "Inventory Stock Unit is required";
     if (!form.category_id) e.category_id = "Please select a category";
     if (form.images.length === 0)
       e.images = "At least one product image is required";
@@ -291,6 +291,66 @@ export default function ProductDetails() {
                   onChange={(e) => updateField("description", e.target.value)}
                   className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-primary-light focus:ring-4 focus:ring-primary/10 transition-all outline-none disabled:bg-gray-50"
                 />
+              </div>
+            </div>
+          </section>
+
+          {/* This are the Inventery */}
+          <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+            <h3 className="text-lg font-bold text-gray-800 border-b pb-3">
+              Base Inventory
+            </h3>
+            <div className="space-y-3">
+              <div className="group relative grid grid-cols-1 sm:grid-cols-4 gap-3 p-4 rounded-xl border border-gray-100 bg-gray-50/50">
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Base Inventory
+                  </label>
+                  <input
+                    placeholder="Base Inventerory"
+                    disabled={!editMode}
+                    value={form.stock_quantity}
+                    onChange={(e) =>
+                      updateField("stock_quantity", e.target.value)
+                    }
+                    className={`w-full p-3 rounded-xl border-2 transition-all focus:ring-4 outline-none ${
+                      errors.stock_quantity
+                        ? "border-red-200 ring-red-50 focus:border-red-500"
+                        : "border-gray-100 focus:border-primary-light focus:ring-primary/10"
+                    } disabled:bg-gray-50 disabled:text-gray-500`}
+                  />
+                  {errors.stock_quantity && (
+                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                      <AlertCircle size={12} /> {errors.stock_quantity}
+                    </p>
+                  )}
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Size
+                  </label>
+                  <select
+                    disabled={!editMode}
+                    value={form.stock_unit}
+                    onChange={(e) => updateField("stock_unit", e.target.value)}
+                    className={`w-full p-3 rounded-xl border-2 transition-all focus:ring-4 outline-none ${
+                      errors.stock_unit
+                        ? "border-red-200 ring-red-50 focus:border-red-500"
+                        : "border-gray-100 focus:border-primary-light focus:ring-primary/10"
+                    } disabled:bg-gray-50 disabled:text-gray-500`}
+                  >
+                    <option value="kg">kg</option>
+                    <option value="gm">gm</option>
+                    <option value="lt">lt</option>
+                    <option value="ml">ml</option>
+                    <option value="others">others</option>
+                  </select>
+                  {errors.stock_unit && (
+                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                      <AlertCircle size={12} /> {errors.stock_unit}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </section>

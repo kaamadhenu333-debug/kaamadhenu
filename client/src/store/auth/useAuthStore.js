@@ -120,6 +120,76 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  // 🔹 SEND OTP
+  sendOTP: async (email) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await axiosInstance.post("/auth/forgot-password", { email });
+
+      set({
+        loading: false,
+        successMessage: res.data.message,
+      });
+
+      return true;
+    } catch (err) {
+      set({
+        loading: false,
+        error: err.response?.data?.message || "Failed to send OTP",
+      });
+      return false;
+    }
+  },
+
+  // 🔹 VERIFY OTP
+  verifyOTP: async (email, otp) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await axiosInstance.post("/auth/verify-otp", {
+        email,
+        otp,
+      });
+
+      set({
+        loading: false,
+        successMessage: res.data.message,
+      });
+
+      return true;
+    } catch (err) {
+      set({
+        loading: false,
+        error: err.response?.data?.message || "Invalid OTP",
+      });
+      return false;
+    }
+  },
+
+  // 🔹 RESET PASSWORD
+  resetPassword: async (email, password, confirmPassword) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await axiosInstance.post("/auth/reset-password", {
+        email,
+        password,
+        confirmPassword,
+      });
+
+      set({
+        loading: false,
+        successMessage: res.data.message,
+      });
+
+      return true;
+    } catch (err) {
+      set({
+        loading: false,
+        error: err.response?.data?.message || "Reset failed",
+      });
+      return false;
+    }
+  },
+
   // CLEAR STATUS
   clearStatus: () => set({ error: null, successMessage: null }),
 }));
